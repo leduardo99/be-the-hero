@@ -6,7 +6,7 @@ const Model = use('Model')
 /** @type {import('@adonisjs/framework/src/Hash')} */
 const Hash = use('Hash')
 
-class User extends Model {
+class Ong extends Model {
   static boot () {
     super.boot()
 
@@ -21,19 +21,9 @@ class User extends Model {
     })
   }
 
-  /**
-   * A relationship on tokens is required for auth to
-   * work. Since features like `refreshTokens` or
-   * `rememberToken` will be saved inside the
-   * tokens table.
-   *
-   * @method tokens
-   *
-   * @return {Object}
-   */
-  tokens () {
-    return this.hasMany('App/Models/Token')
+  incidents () {
+    return this.hasMany('App/Models/Incident')
   }
 }
 
-module.exports = User
+module.exports = Ong
