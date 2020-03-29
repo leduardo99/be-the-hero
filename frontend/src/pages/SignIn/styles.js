@@ -9,8 +9,6 @@ export const Container = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-
-  > img {}
 `;
 
 export const FormSection = styled.section`
@@ -45,6 +43,4 @@ export const FormSection = styled.section`
       }
     }
   }
-
-  > img {}
 `;
