@@ -1,8 +1,14 @@
-'use strict'
+"use strict";
 
 /** @typedef {import('@adonisjs/framework/src/Request')} Request */
 /** @typedef {import('@adonisjs/framework/src/Response')} Response */
 /** @typedef {import('@adonisjs/framework/src/View')} View */
+
+const Yup = require("yup");
+const crypto = require("crypto");
+
+/** @type {typeof import('@adonisjs/lucid/src/Lucid/Model')} Ong*/
+const Ong = use("App/Models/Ong");
 
 /**
  * Resourceful controller for interacting with ongs
@@ -12,35 +18,45 @@ class OngController {
    * Show a list of all ongs.
    * GET ongs
    *
-   * @param {object} ctx
-   * @param {Request} ctx.request
    * @param {Response} ctx.response
-   * @param {View} ctx.view
    */
-  async index ({ request, response, view }) {
-  }
+  async index({ response }) {
+    const ongs = await Ong.all();
 
-  /**
-   * Render a form to be used for creating a new ong.
-   * GET ongs/create
-   *
-   * @param {object} ctx
-   * @param {Request} ctx.request
-   * @param {Response} ctx.response
-   * @param {View} ctx.view
-   */
-  async create ({ request, response, view }) {
+    return response.json(ongs);
   }
 
   /**
    * Create/save a new ong.
    * POST ongs
    *
-   * @param {object} ctx
    * @param {Request} ctx.request
    * @param {Response} ctx.response
    */
-  async store ({ request, response }) {
+  async store({ request, response }) {
+    const data = request.body;
+
+    const validation = Yup.object().shape({
+      name: Yup.string().required(),
+      email: Yup.string()
+        .required()
+        .email(),
+      whatsapp: Yup.string().required(),
+      city: Yup.string().required(),
+      uf: Yup.string().required()
+    });
+
+    if (!(await validation.validate(data))) {
+      return response
+        .status(400)
+        .json({ message: "The fields provided are invalid" });
+    }
+
+    const id = crypto.randomBytes(4).toString("HEX");
+
+    const ong = await Ong.create({ ...data, id });
+
+    return response.json({ id });
   }
 
   /**
@@ -48,23 +64,18 @@ class OngController {
    * GET ongs/:id
    *
    * @param {object} ctx
-   * @param {Request} ctx.request
    * @param {Response} ctx.response
-   * @param {View} ctx.view
    */
-  async show ({ params, request, response, view }) {
-  }
+  async show({ params, response }) {
+    const ong = await Ong.findBy("id", params.id);
 
-  /**
-   * Render a form to update an existing ong.
-   * GET ongs/:id/edit
-   *
-   * @param {object} ctx
-   * @param {Request} ctx.request
-   * @param {Response} ctx.response
-   * @param {View} ctx.view
-   */
-  async edit ({ params, request, response, view }) {
+    if (!ong) {
+      return response
+        .status(404)
+        .json({ message: "The informed ONG does not have a register" });
+    }
+
+    return response.json(ong);
   }
 
   /**
@@ -75,7 +86,13 @@ class OngController {
    * @param {Request} ctx.request
    * @param {Response} ctx.response
    */
-  async update ({ params, request, response }) {
+  async update({ params, request, response }) {
+    const ong = await Ong.findOrFail(params.id);
+
+    ong.merge(request.body);
+    await ong.save();
+
+    return response.json(ong);
   }
 
   /**
@@ -83,11 +100,12 @@ class OngController {
    * DELETE ongs/:id
    *
    * @param {object} ctx
-   * @param {Request} ctx.request
-   * @param {Response} ctx.response
    */
-  async destroy ({ params, request, response }) {
+  async destroy({ params }) {
+    const cliente = await Cliente.findOrFail(params.id);
+
+    await cliente.delete();
   }
 }
 
-module.exports = OngController
+module.exports = OngController;
