@@ -1,12 +1,13 @@
-'use strict'
+"use strict";
 
 /** @typedef {import('@adonisjs/framework/src/Request')} Request */
 /** @typedef {import('@adonisjs/framework/src/Response')} Response */
-/** @typedef {import('@adonisjs/framework/src/View')} View */
 
-/**
- * Resourceful controller for interacting with incidents
- */
+const Yup = require("yup");
+
+/** @type {typeof import('@adonisjs/lucid/src/Lucid/Model')} Incident*/
+const Incident = use("App/Models/Incident");
+
 class IncidentController {
   /**
    * Show a list of all incidents.
@@ -15,21 +16,15 @@ class IncidentController {
    * @param {object} ctx
    * @param {Request} ctx.request
    * @param {Response} ctx.response
-   * @param {View} ctx.view
    */
-  async index ({ request, response, view }) {
-  }
+  async index({ request, response }) {
+    const { page = 1, pageSize = 5 } = request.get();
 
-  /**
-   * Render a form to be used for creating a new incident.
-   * GET incidents/create
-   *
-   * @param {object} ctx
-   * @param {Request} ctx.request
-   * @param {Response} ctx.response
-   * @param {View} ctx.view
-   */
-  async create ({ request, response, view }) {
+    const incidents = await Incident.query()
+      .with("ong")
+      .paginate(page, pageSize);
+
+    return response.json(incidents);
   }
 
   /**
@@ -40,7 +35,26 @@ class IncidentController {
    * @param {Request} ctx.request
    * @param {Response} ctx.response
    */
-  async store ({ request, response }) {
+  async store({ auth, request, response }) {
+    const data = request.body;
+
+    const validation = Yup.object().shape({
+      title: Yup.string().required(),
+      description: Yup.string().required(),
+      value: Yup.number().required()
+    });
+
+    if (!(await validation.validate(data))) {
+      return response
+        .status(400)
+        .json({ message: "The fields provided are invalid" });
+    }
+
+    const ong_id = auth.user.id;
+
+    const { id } = await Incident.create({ ...data, ong_id });
+
+    return response.json({ id });
   }
 
   /**
@@ -50,21 +64,15 @@ class IncidentController {
    * @param {object} ctx
    * @param {Request} ctx.request
    * @param {Response} ctx.response
-   * @param {View} ctx.view
    */
-  async show ({ params, request, response, view }) {
-  }
+  async show({ auth, params, response }) {
+    const incident = await Incident.findOrFail(params.id);
 
-  /**
-   * Render a form to update an existing incident.
-   * GET incidents/:id/edit
-   *
-   * @param {object} ctx
-   * @param {Request} ctx.request
-   * @param {Response} ctx.response
-   * @param {View} ctx.view
-   */
-  async edit ({ params, request, response, view }) {
+    if (auth.user.id !== incident.ong_id) {
+      return response.status(403).json({ message: "Operation not permitted." });
+    }
+
+    return response.json(incident);
   }
 
   /**
@@ -75,7 +83,17 @@ class IncidentController {
    * @param {Request} ctx.request
    * @param {Response} ctx.response
    */
-  async update ({ params, request, response }) {
+  async update({ params, request, response }) {
+    const incident = await Incident.findOrFail(params.id);
+
+    if (auth.user.id !== incident.ong_id) {
+      return response.status(403).json({ message: "Operation not permitted." });
+    }
+
+    incident.merge(request.body);
+    await incident.save();
+
+    return response.json(incident);
   }
 
   /**
@@ -83,11 +101,19 @@ class IncidentController {
    * DELETE incidents/:id
    *
    * @param {object} ctx
-   * @param {Request} ctx.request
    * @param {Response} ctx.response
    */
-  async destroy ({ params, request, response }) {
+  async destroy({ params, auth, response }) {
+    const incident = await Incident.findOrFail(params.id);
+
+    if (auth.user.id !== incident.ong_id) {
+      return response.status(403).json({ message: "Operation not permitted." });
+    }
+
+    await incident.delete();
+
+    return response.status(204).send();
   }
 }
 
-module.exports = IncidentController
+module.exports = IncidentController;

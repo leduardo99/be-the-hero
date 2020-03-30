@@ -4,6 +4,13 @@
 const Model = use('Model')
 
 class Incident extends Model {
+  static get hidden () {
+    return ['ong_id']
+  }
+
+  ong () {
+    return this.belongsTo('App/Models/Ong')
+  }
 }
 
 module.exports = Incident
