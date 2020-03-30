@@ -11,4 +11,10 @@ Route.group("protected routes", () => {
   Route.get("ongs/:id", "OngController.show");
   Route.put("ongs/:id", "OngController.update");
   Route.delete("ongs/:id", "OngController.destroy");
+
+  Route.post("incidents", "IncidentController.store");
+  Route.get("incidents", "IncidentController.index");
+  Route.get("incidents/:id", "IncidentController.show");
+  Route.get("incidents/:id", "IncidentController.update");
+  Route.get("incidents/:id", "IncidentController.destroy");
 }).middleware("auth");
