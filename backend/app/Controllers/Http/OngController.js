@@ -102,9 +102,11 @@ class OngController {
    * @param {object} ctx
    */
   async destroy({ params }) {
-    const cliente = await Cliente.findOrFail(params.id);
+    const ong = await Ong.findOrFail(params.id);
 
-    await cliente.delete();
+    await ong.delete();
+
+    return response.status(204).send();
   }
 }
 
