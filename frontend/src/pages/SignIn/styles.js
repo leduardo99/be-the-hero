@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled from "styled-components";
 
 export const Container = styled.div`
   width: 100%;
@@ -21,25 +21,40 @@ export const FormSection = styled.section`
 
     h1 {
       font-size: 32px;
-      margin-bottom: 32px; 
+      margin-bottom: 32px;
+      color: ${props => props.theme.colors.text};
     }
 
-    a {
+    div {
       display: flex;
+      justify-content: space-between;
       align-items: center;
       margin-top: 40px;
-      color: #41414d;
-      font-size: 18px;
-      text-decoration: none;
-      font-weight: 500;
-      transition: opacity 0.2s;
 
-      &:hover {
-        opacity: 0.8;
+      a {
+        display: flex;
+        align-items: center;
+        color: ${props => props.theme.colors.text};
+        font-size: 18px;
+        text-decoration: none;
+        font-weight: 500;
+        transition: opacity 0.2s;
+
+        &:hover {
+          opacity: 0.8;
+        }
+
+        svg {
+          margin-right: 8px;
+        }
       }
 
-      svg {
-        margin-right: 8px;
+      > svg {
+        cursor: pointer;
+
+        &:hover {
+          opacity: 0.8;
+        }
       }
     }
   }
