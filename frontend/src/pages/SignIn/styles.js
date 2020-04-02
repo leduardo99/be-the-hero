@@ -7,7 +7,7 @@ export const Container = styled.div`
   margin: 0 auto;
 
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
 `;
 
@@ -22,7 +22,7 @@ export const FormSection = styled.section`
     h1 {
       font-size: 32px;
       margin-bottom: 32px;
-      color: ${props => props.theme.colors.text};
+      color: ${props => props.theme.colors.foreground};
     }
 
     div {
@@ -30,25 +30,7 @@ export const FormSection = styled.section`
       justify-content: space-between;
       align-items: center;
       margin-top: 40px;
-
-      a {
-        display: flex;
-        align-items: center;
-        color: ${props => props.theme.colors.text};
-        font-size: 18px;
-        text-decoration: none;
-        font-weight: 500;
-        transition: opacity 0.2s;
-
-        &:hover {
-          opacity: 0.8;
-        }
-
-        svg {
-          margin-right: 8px;
-        }
-      }
-
+      
       > svg {
         cursor: pointer;
 

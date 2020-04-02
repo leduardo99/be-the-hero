@@ -2,16 +2,17 @@ import React, { createContext } from "react";
 import { ThemeProvider } from "styled-components";
 import { Provider } from "react-redux";
 
+import "./config/ReactotronConfig";
+
 import usePersistedState from "./utils/usePersistedState";
 
-import SignIn from "./pages/SignIn";
+import Routes from "./routes";
 import GlobalStyle from "./styles/global";
 
 import light from "./styles/themes/light";
 import dark from "./styles/themes/dark";
 
-import "./config/ReactotronConfig";
-import store from './store';
+import store from "./store";
 
 export const AppContext = createContext({});
 
@@ -24,9 +25,9 @@ function App() {
 
   return (
     <Provider store={store}>
-      <AppContext.Provider value={toggleTheme}>
+      <AppContext.Provider value={{ toggleTheme, theme }}>
         <ThemeProvider theme={theme}>
-          <SignIn />
+          <Routes />
           <GlobalStyle />
         </ThemeProvider>
       </AppContext.Provider>
