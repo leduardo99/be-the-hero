@@ -8,6 +8,7 @@ export default {
     paragraph: "#737380",
     foreground: "#262626",
     support: "#dcdce6",
+    card: "#fff",
     accent: "#fff",
   }
 };

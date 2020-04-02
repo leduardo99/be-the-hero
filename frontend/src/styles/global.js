@@ -44,6 +44,28 @@ export default createGlobalStyle`
     }
   }
 
+  form textarea {
+    width: 100%;
+    resize: vertical;
+    min-height: 140px;
+    height: 60px;
+    color: ${props =>
+      props.theme.title !== "light" && props.theme.colors.background};
+    border: 1px solid ${props => props.theme.colors.support};
+    border-radius: 8px;
+    padding: 16px 24px;
+    line-height: 24px;
+
+    &:focus {
+      border-bottom: 5px solid ${props => props.theme.colors.primary};
+      transition: border-bottom 0.1s ease-in;
+    }
+
+    &:not(:focus) {
+      transition: border-bottom 0.1s ease-out;
+    }
+  }
+
   .button {
     width: 100%;
     height: 60px;
