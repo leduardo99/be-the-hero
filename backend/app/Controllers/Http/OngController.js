@@ -54,7 +54,7 @@ class OngController {
 
     const id = crypto.randomBytes(4).toString("HEX");
 
-    const ong = await Ong.create({ ...data, id });
+    await Ong.create({ ...data, id });
 
     return response.json({ id });
   }
