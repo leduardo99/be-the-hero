@@ -3,7 +3,6 @@ import { Link } from "react-router-dom";
 import { FiLogIn } from "react-icons/fi";
 import { TiAdjustBrightness } from "react-icons/ti";
 import { Form } from "@unform/web";
-import { toast } from "react-toastify";
 import { useSelector, useDispatch } from "react-redux";
 
 import { AppContext } from "../../App";

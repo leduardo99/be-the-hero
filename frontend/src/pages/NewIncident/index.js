@@ -2,15 +2,29 @@ import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import { FiArrowLeft } from "react-icons/fi";
 import { TiAdjustBrightness } from "react-icons/ti";
+import { useDispatch } from "react-redux";
+import { Form } from "@unform/web";
 
 import { AppContext } from "../../App";
+
+import Input from "../../components/Input";
+import TextArea from "../../components/TextArea";
+
 import { Container, Content } from "./styles";
+
+import IncidentsActions from "../../store/ducks/incidents";
 
 import logoLight from "../../assets/logo.svg";
 import logoDark from "../../assets/logo-dark.svg";
 
 export default function NewIncident() {
   const { toggleTheme, theme } = useContext(AppContext);
+
+  const dispatch = useDispatch();
+
+  function handleNewIncident(data) {
+    dispatch(IncidentsActions.newIncidentRequest(data));
+  }
 
   return (
     <Container>
@@ -39,15 +53,15 @@ export default function NewIncident() {
           </div>
         </section>
 
-        <form>
-          <input placeholder="Título do caso" />
-          <textarea placeholder="Descrição" />
-          <input placeholder="Valor em reais" />
+        <Form onSubmit={handleNewIncident}>
+          <Input name="title" placeholder="Título do caso" />
+          <TextArea name="description" placeholder="Descrição" />
+          <Input name="value" type="number" placeholder="Valor em reais" />
 
           <button className="button" type="submit">
             Cadastrar
           </button>
-        </form>
+        </Form>
       </Content>
     </Container>
   );
