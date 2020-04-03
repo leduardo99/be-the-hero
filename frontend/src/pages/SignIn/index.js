@@ -2,8 +2,13 @@ import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import { FiLogIn } from "react-icons/fi";
 import { TiAdjustBrightness } from "react-icons/ti";
+import { Form } from "@unform/web";
+import { toast } from "react-toastify";
+import { useSelector } from "react-redux";
 
 import { AppContext } from "../../App";
+
+import Input from "../../components/Input";
 
 import { Container, FormSection } from "./styles";
 
@@ -13,6 +18,11 @@ import herosImg from "../../assets/heroes.png";
 
 export default function SignIn() {
   const { toggleTheme, theme } = useContext(AppContext);
+  const id = useSelector(state => state.auth.ongId);
+
+  const initialData = { id };
+
+  function handleSubmit() {}
 
   return (
     <Container>
@@ -20,10 +30,10 @@ export default function SignIn() {
         {theme.title === "light" && <img src={logoLight} alt="Be The Hero" />}
         {theme.title === "dark" && <img src={logoDark} alt="Be The Hero" />}
 
-        <form>
+        <Form onSubmit={handleSubmit} initialData={initialData}>
           <h1>Faça seu logon</h1>
 
-          <input placeholder="Sua ID" />
+          <Input name="id" placeholder="Sua ID" />
           <button type="submit" className="button">
             Entrar
           </button>
@@ -40,7 +50,7 @@ export default function SignIn() {
               onClick={toggleTheme}
             />
           </div>
-        </form>
+        </Form>
       </FormSection>
 
       <img src={herosImg} alt="heros" />

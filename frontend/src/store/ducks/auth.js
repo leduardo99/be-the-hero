@@ -4,7 +4,14 @@ import Immutable from "seamless-immutable";
 /* Types & Action Creators */
 
 const { Types, Creators } = createActions({
-  actionType: ["dataPassed"]
+  signInRequest: ["id"],
+  signInSuccess: ["jwt", "ong"],
+
+  signUpRequest: ["data"],
+  signUpSuccess: ["id"],
+
+  signFailure: null,
+  signOut: null
 });
 
 export const AuthTypes = Types;
@@ -12,16 +19,16 @@ export default Creators;
 
 /* Initial State */
 
-export const INITIAL_STATE = Immutable({
-  authenticated: true
+const INITIAL_STATE = Immutable({
+  authenticated: true,
+  ongId: null,
+  jwt: null
 });
-
-/* Reducers */
-
-export const action = state => state.merge({ data: [] });
 
 /* Reducers to types */
 
 export const reducer = createReducer(INITIAL_STATE, {
-  [Types.ACTION_TYPE]: action
+  [Types.SIGN_IN_SUCCESS]: (state, action) =>
+    state.merge({ jwt: action.jwt, authenticated: true }),
+  [Types.SIGN_UP_SUCCESS]: (state, action) => state.merge({ ongId: action.id })
 });

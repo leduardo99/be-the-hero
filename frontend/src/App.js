@@ -1,6 +1,7 @@
 import React, { createContext } from "react";
 import { ThemeProvider } from "styled-components";
 import { Provider } from "react-redux";
+import { ToastContainer } from "react-toastify";
 
 import "./config/ReactotronConfig";
 
@@ -29,6 +30,7 @@ function App() {
         <ThemeProvider theme={theme}>
           <Routes />
           <GlobalStyle />
+          <ToastContainer />
         </ThemeProvider>
       </AppContext.Provider>
     </Provider>
