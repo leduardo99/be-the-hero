@@ -52,9 +52,14 @@ class IncidentController {
 
     const ong_id = auth.user.id;
 
-    const { id } = await Incident.create({ ...data, ong_id });
+    const { id, title, description, value, created_at } = await Incident.create(
+      {
+        ...data,
+        ong_id
+      }
+    );
 
-    return response.json({ id });
+    return response.json({ id, title, description, value, created_at });
   }
 
   /**
