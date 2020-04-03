@@ -4,13 +4,15 @@ import { FiLogIn } from "react-icons/fi";
 import { TiAdjustBrightness } from "react-icons/ti";
 import { Form } from "@unform/web";
 import { toast } from "react-toastify";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 
 import { AppContext } from "../../App";
 
 import Input from "../../components/Input";
 
 import { Container, FormSection } from "./styles";
+
+import AuthActions from "../../store/ducks/auth";
 
 import logoLight from "../../assets/logo.svg";
 import logoDark from "../../assets/logo-dark.svg";
@@ -22,7 +24,11 @@ export default function SignIn() {
 
   const initialData = { id };
 
-  function handleSubmit() {}
+  const dispatch = useDispatch();
+
+  function handleSubmit({ id }) {
+    dispatch(AuthActions.signInRequest(id));
+  }
 
   return (
     <Container>

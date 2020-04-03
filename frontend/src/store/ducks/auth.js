@@ -30,5 +30,7 @@ const INITIAL_STATE = Immutable({
 export const reducer = createReducer(INITIAL_STATE, {
   [Types.SIGN_IN_SUCCESS]: (state, action) =>
     state.merge({ jwt: action.jwt, authenticated: true }),
-  [Types.SIGN_UP_SUCCESS]: (state, action) => state.merge({ ongId: action.id })
+  [Types.SIGN_UP_SUCCESS]: (state, action) => state.merge({ ongId: action.id }),
+  [Types.SIGN_OUT]: state =>
+    state.merge({ ongId: null, authenticated: false, jwt: null })
 });

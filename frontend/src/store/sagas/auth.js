@@ -14,11 +14,11 @@ export function* signIn({ id }) {
 
     yield put(AuthActions.signInSuccess(jwt, ong));
 
-    // api.defaults.headers.Authorization = `Bearer ${token}`;
+    api.defaults.headers.Authorization = `Bearer ${jwt.token}`;
 
     history.push("/profile");
   } catch (error) {
-    toast.error("Falha na autenticação, verifique seus dados");
+    toast.error("Falha na autenticação, verifique seus dados.");
     yield put(AuthActions.signFailure());
   }
 }
