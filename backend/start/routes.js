@@ -4,6 +4,8 @@
 const Route = use("Route");
 
 Route.post("sessions/:id", "SessionController.store");
+Route.put("sessions", "RefreshTokenController.store");
+
 Route.post("ongs", "OngController.store");
 
 Route.group("protected routes", () => {
@@ -15,6 +17,8 @@ Route.group("protected routes", () => {
   Route.post("incidents", "IncidentController.store");
   Route.get("incidents", "IncidentController.index");
   Route.get("incidents/:id", "IncidentController.show");
-  Route.get("incidents/:id", "IncidentController.update");
-  Route.get("incidents/:id", "IncidentController.destroy");
+  Route.put("incidents/:id", "IncidentController.update");
+  Route.delete("incidents/:id", "IncidentController.destroy");
+
+  Route.get("profile", "ProfileController.index");
 }).middleware("auth");
