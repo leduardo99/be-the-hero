@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { FiPower, FiTrash2 } from "react-icons/fi";
 import { useSelector, useDispatch } from "react-redux";
@@ -7,6 +7,7 @@ import { AppContext } from "../../App";
 import { Container, Header } from "./styles";
 
 import AuthActions from "../../store/ducks/auth";
+import IncidentsActions from "../../store/ducks/incidents";
 
 import logoLight from "../../assets/logo.svg";
 import logoDark from "../../assets/logo-dark.svg";
@@ -14,13 +15,21 @@ import logoDark from "../../assets/logo-dark.svg";
 export default function Profile() {
   const { theme } = useContext(AppContext);
 
-  const ong = useSelector(state => state.ong);
-  const incidents = useSelector(state => state.incidents);
+  const ong = useSelector((state) => state.ong);
+  const incidents = useSelector((state) => state.incidents);
   const dispatch = useDispatch();
 
   function handleSignOut() {
     dispatch(AuthActions.signOut());
   }
+
+  function handleRemoveIncident(id) {
+    dispatch(IncidentsActions.removeIncidentRequest(id));
+  }
+
+  useEffect(() => {
+    dispatch(IncidentsActions.incidentsRequest());
+  }, []);
 
   return (
     <Container>
@@ -42,7 +51,7 @@ export default function Profile() {
       <h1>Casos cadastrados</h1>
 
       <ul>
-        {incidents.map(incident => (
+        {incidents.map((incident) => (
           <li key={incident.id}>
             <strong>CASO:</strong>
             <p>{incident.title}</p>
@@ -51,9 +60,12 @@ export default function Profile() {
             <p>{incident.description}</p>
 
             <strong>Valor:</strong>
-            <p>{incident.value}</p>
+            <p>R${incident.value.toLocaleString()}</p>
 
-            <button type="button">
+            <button
+              type="button"
+              onClick={() => handleRemoveIncident(incident.id)}
+            >
               <FiTrash2 size={20} color="#a8a8b3" />
             </button>
           </li>

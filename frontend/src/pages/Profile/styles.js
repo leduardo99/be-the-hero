@@ -9,7 +9,7 @@ export const Container = styled.div`
   h1 {
     margin-top: 80px;
     margin-bottom: 24px;
-    color: ${props => props.theme.colors.secondary};
+    color: ${(props) => props.theme.colors.secondary};
   }
 
   ul {
@@ -19,19 +19,22 @@ export const Container = styled.div`
     list-style: none;
 
     li {
-      background: ${props => props.theme.colors.card};
+      background: ${(props) => props.theme.colors.card};
       padding: 24px;
       border-radius: 8px;
       position: relative;
+      max-width: 548px;
+
+      word-break: break-all;
 
       strong {
         display: block;
         margin-bottom: 16px;
-        color: ${props => props.theme.colors.secondary};
+        color: ${(props) => props.theme.colors.secondary};
       }
 
       p {
-        color: ${props => props.theme.colors.paragraph};
+        color: ${(props) => props.theme.colors.paragraph};
         line-height: 21px;
         font-size: 16px;
       }
@@ -62,7 +65,7 @@ export const Header = styled.header`
   span {
     font-size: 20px;
     margin-left: 24px;
-    color: ${props => props.theme.colors.secondary};
+    color: ${(props) => props.theme.colors.secondary};
   }
 
   img {

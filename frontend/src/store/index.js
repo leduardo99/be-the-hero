@@ -1,12 +1,12 @@
-import createSagaMiddleware from 'redux-saga';
+import createSagaMiddleware from "redux-saga";
 
-import createStore from './createStore';
+import createStore from "./createStore";
 
-import rootReducer from './ducks';
-import rootSaga from './sagas';
+import rootReducer from "./ducks";
+import rootSaga from "./sagas";
 
 const sagaMonitor =
-  process.env.NODE_ENV === 'development'
+  process.env.NODE_ENV === "development"
     ? console.tron.createSagaMonitor()
     : null;
 

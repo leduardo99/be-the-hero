@@ -13,7 +13,7 @@ function PrivateRoute({ component: Component, ...rest }) {
   return (
     <Route
       {...rest}
-      render={props =>
+      render={(props) =>
         store.getState().auth.authenticated ? (
           <Component {...props} />
         ) : (

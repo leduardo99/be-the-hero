@@ -11,7 +11,9 @@ const { Types, Creators } = createActions({
   signUpSuccess: ["id"],
 
   signFailure: null,
-  signOut: null
+  signOut: null,
+
+  refreshToken: ["jwt"],
 });
 
 export const AuthTypes = Types;
@@ -22,7 +24,7 @@ export default Creators;
 const INITIAL_STATE = Immutable({
   authenticated: true,
   ongId: null,
-  jwt: null
+  jwt: null,
 });
 
 /* Reducers to types */
@@ -31,6 +33,7 @@ export const reducer = createReducer(INITIAL_STATE, {
   [Types.SIGN_IN_SUCCESS]: (state, action) =>
     state.merge({ jwt: action.jwt, authenticated: true }),
   [Types.SIGN_UP_SUCCESS]: (state, action) => state.merge({ ongId: action.id }),
-  [Types.SIGN_OUT]: state =>
-    state.merge({ ongId: null, authenticated: false, jwt: null })
+  [Types.SIGN_OUT]: (state) =>
+    state.merge({ ongId: null, authenticated: false, jwt: null }),
+  [Types.REFRESH_TOKEN]: (state, action) => state.merge({ jwt: action.jwt }),
 });
