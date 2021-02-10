@@ -29,7 +29,7 @@ export default function Profile() {
 
   useEffect(() => {
     dispatch(IncidentsActions.incidentsRequest());
-  }, []);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <Container>
